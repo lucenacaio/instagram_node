@@ -35,14 +35,18 @@ module.exports.getPostById = function(application, req, res) {
 module.exports.savePost = function(application, req, res) {
     let connection = application.config.dbConnection;
     let PostModel = new application.app.models.PostModel(connection);
-    let moveImage = application.app.util.pathUtil(req, res);
-    if (moveImage.status == 1) {
-        let dataToSend = {
-            Title: req.body.Title,
-            img_url: moveImage.file_name
-        };
-        PostModel.savePost(dataToSend, req, res);
+    let pathUtil = new application.app.util.pathUtil();
+    var moveImage = pathUtil.changePathImage(req, res);
+    if (moveImage.status === 0) {
+        res.status(500).json(moveImage);
+        return;
     }
+    let dataToSend = {
+        Title: req.body.Title,
+        img_name: moveImage.file_name,
+        img_url: moveImage.url_img_server
+    };
+    PostModel.savePost(dataToSend, req, res);
 }
 
 /**

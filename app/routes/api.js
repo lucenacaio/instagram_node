@@ -1,6 +1,16 @@
 module.exports = function(application) {
 
     /**
+     * @description GET picture
+     * 
+     * @method GET @host /uploads/:image
+     */
+    application.get('/uploads/:image', function(req, res) {
+        res.setHeader("Access-Control-Allow-Origin", "*");
+        application.app.controllers.image.getPicture(application, req, res);
+    });
+
+    /**
      * @description GET all posts
      * 
      * @method GET @host /api/post
@@ -8,6 +18,7 @@ module.exports = function(application) {
      * @return [Array] posts
      */
     application.get('/api/post', function(req, res) {
+        res.setHeader("Access-Control-Allow-Origin", "*");
         application.app.controllers.post.getPost(application, req, res);
     });
 
