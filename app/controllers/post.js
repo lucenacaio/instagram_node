@@ -32,10 +32,17 @@ module.exports.getPostById = function(application, req, res) {
  * @param {Object} response
  * @param {Object} data
  */
-module.exports.savePost = function(application, req, res, data) {
+module.exports.savePost = function(application, req, res) {
     let connection = application.config.dbConnection;
     let PostModel = new application.app.models.PostModel(connection);
-    PostModel.savePost(data, req, res);
+    let moveImage = application.app.util.pathUtil(req, res);
+    if (moveImage.status == 1) {
+        let dataToSend = {
+            Title: req.body.Title,
+            img_url: moveImage.file_name
+        };
+        PostModel.savePost(dataToSend, req, res);
+    }
 }
 
 /**
