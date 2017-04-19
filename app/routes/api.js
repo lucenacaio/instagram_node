@@ -9,8 +9,7 @@ module.exports = function(application) {
 
     /**
      * @description POST Call for user addition
-     * 
-     * @method POST @host /user
+     * @method POST @host /user 
      * 
      * @param  {string} name
      * @param  {string} email
@@ -18,10 +17,20 @@ module.exports = function(application) {
      * @param  {string} password
      * @param  {Object} profile_picture
      */
-    application.post('/api/user', function(req, res) {
+    application.post('/user', function(req, res) {
         application.app.controllers.user.addUser(application, req, res);
     });
 
+    /**
+     * @description POST Login route
+     * 
+     * @method POST @host /user
+     * @param  {string} username
+     * @param  {string} password
+     */
+    application.post('/authenticate', function(req, res) {
+        application.app.controllers.user.authenticate(application, req, res);
+    });
 
 
     /**
@@ -49,7 +58,7 @@ module.exports = function(application) {
 
     /**
      * @description GET all posts
-     * 
+     * require x-access-token
      * @method GET @host /api/post
      * 
      * @return [Array] posts
@@ -60,7 +69,7 @@ module.exports = function(application) {
 
     /**
      * @description GET an especific post
-     * 
+     * require x-access-token
      * @method GET @host /api/post/:id
      * 
      * @return [Array] post
@@ -71,7 +80,7 @@ module.exports = function(application) {
 
     /**
      * @description POST a post
-     * 
+     *  require x-access-token
      * @method POST @host /api/post
      * 
      * @param {string} Title
@@ -86,7 +95,7 @@ module.exports = function(application) {
 
     /**
      * @description ADD comment to picture
-     * 
+     *  require x-access-token
      * @method POST @host /api/post/:id
      * 
      * @param {string} Comment
@@ -99,7 +108,7 @@ module.exports = function(application) {
 
     /**
      * @description DELETE an especific comment
-     * 
+     *  require x-access-token
      * @method DELETE @host /api/post/:id
      * 
      * @returns {Object} status = 1 on success and status = 0 on error

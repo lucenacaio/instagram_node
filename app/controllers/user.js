@@ -28,3 +28,17 @@ module.exports.addUser = function(application, req, res) {
     }
     UsersModel.addUser(application, req, res, dataToSend);
 }
+
+/**
+ * @description Method to authenticate
+ * 
+ * @param {Object} application
+ * @param {Object} request
+ * @param {Object} response
+ */
+module.exports.authenticate = function(application, req, res) {
+    let user = req.body;
+    let connection = application.config.dbConnection;
+    let UsersModel = new application.app.models.UsersModel(connection);
+    UsersModel.authenticate(application, res, user);
+}
