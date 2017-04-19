@@ -60,6 +60,15 @@ pathUtil.prototype.readProfilePicture = function(req, res, img_name) {
         });
 }
 
+pathUtil.prototype.removeProfilePicture = function(img_name) {
+    let filePath = './uploads/profile_folder/' + img_name;
+    let response = { status: 1 };
+    fs.unlinkSync(filePath, function(err) {
+        if (err) response.status = 0;
+    });
+    return response;
+}
+
 module.exports = function() {
     return pathUtil;
 }

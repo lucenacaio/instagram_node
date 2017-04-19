@@ -26,5 +26,5 @@ module.exports.addUser = function(application, req, res) {
             img_url: profile_picture.url_img_server
         }
     }
-    UsersModel.addUser(req, res, dataToSend);
+    UsersModel.addUser(application, req, res, dataToSend);
 }
