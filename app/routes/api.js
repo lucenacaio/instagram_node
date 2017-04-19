@@ -60,13 +60,13 @@ module.exports = function(application) {
     });
 
     /**
-     * @description DELETE an especific post
+     * @description DELETE an especific comment
      * 
      * @method DELETE @host /api/post/:id
      * 
      * @returns {Object} status = 1 on success and status = 0 on error
      */
-    application.delete('/api/post/:id', function(req, res) {
-        application.app.controllers.post.deletePost(application, req, res);
+    application.delete('/api/post/:id/comment/:id_comment', function(req, res) {
+        application.app.controllers.comment.removeComment(application, req, res);
     });
 }

@@ -113,6 +113,32 @@ PostModel.prototype.addComment = function(data, req, res) {
     });
 }
 
+/**
+ * @description Delete post
+ * 
+ * @returns {Object} 1 if success or 0 if error
+ */
+PostModel.prototype.removeComment = function(req, res) {
+    this._connection.open(function(err, mongoclient) {
+        mongoclient.collection(COLLECTION_NAME, function(err, collection) {
+            collection.update({
+                    _id: ObjectID(req.params.id)
+                }, {
+                    $pull: {
+                        comments: {
+                            id_comment: ObjectID(req.params.id_comment)
+                        }
+                    }
+                }, {},
+                function(err, records) {
+                    if (err) res.json({ status: 0 });
+                    else res.json({ status: 1 });
+                    mongoclient.close();
+                });
+        });
+    });
+}
+
 
 module.exports = function() {
     return PostModel;
