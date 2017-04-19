@@ -1,12 +1,50 @@
 module.exports = function(application) {
 
     /**
+     * 
+     * Implements User Routes
+     * 
+     * 
+     */
+
+    /**
+     * @description POST Call for user addition
+     * 
+     * @method POST @host /user
+     * 
+     * @param  {string} name
+     * @param  {string} email
+     * @param  {string} username
+     * @param  {string} password
+     * @param  {Object} profile_picture
+     */
+    application.post('/api/user', function(req, res) {
+        application.app.controllers.user.addUser(application, req, res);
+    });
+
+
+
+    /**
+     * End User Routes
+     */
+
+
+    /**
      * @description GET picture
      * 
      * @method GET @host /uploads/:image
      */
     application.get('/uploads/:image', function(req, res) {
         application.app.controllers.image.getPicture(application, req, res);
+    });
+
+    /**
+     * @description GET picture
+     * 
+     * @method GET @host /uploads/profile/:image
+     */
+    application.get('/uploads/profile/:image', function(req, res) {
+        application.app.controllers.image.getProfilePicture(application, req, res);
     });
 
     /**
