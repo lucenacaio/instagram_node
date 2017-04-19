@@ -65,30 +65,6 @@ PostModel.prototype.savePost = function(data, req, res) {
 }
 
 /**
- * @description Put a new Title on post
- * 
- * @returns {Object} 1 if success or 0 if error
- */
-PostModel.prototype.putTitle = function(data, req, res) {
-    this._connection.open(function(err, mongoclient) {
-        mongoclient.collection(COLLECTION_NAME, function(err, collection) {
-            collection.update({
-                    _id: ObjectID(req.params.id)
-                }, {
-                    $set: {
-                        Title: req.body.Title
-                    }
-                }, {},
-                function(err, records) {
-                    if (err) res.json({ status: 0 });
-                    else res.json({ status: 1 });
-                    mongoclient.close();
-                });
-        });
-    });
-}
-
-/**
  * @description Delete post
  * 
  * @returns {Object} 1 if success or 0 if error
@@ -99,6 +75,35 @@ PostModel.prototype.deletePost = function(req, res) {
             collection.remove({
                     _id: ObjectID(req.params.id)
                 },
+                function(err, records) {
+                    if (err) res.json({ status: 0 });
+                    else res.json({ status: 1 });
+                    mongoclient.close();
+                });
+        });
+    });
+}
+
+
+/**
+ * @description Add comment to picture
+ * 
+ * @returns {Object} 1 if success or 0 if error
+ */
+PostModel.prototype.addComment = function(data, req, res) {
+    this._connection.open(function(err, mongoclient) {
+        mongoclient.collection(COLLECTION_NAME, function(err, collection) {
+            collection.update({
+                    _id: ObjectID(req.params.id)
+                }, {
+                    $push: {
+                        comments: {
+                            id_comment: new ObjectID(),
+                            comment: req.body.comment,
+                            time: new Date().getTime()
+                        }
+                    }
+                }, {},
                 function(err, records) {
                     if (err) res.json({ status: 0 });
                     else res.json({ status: 1 });

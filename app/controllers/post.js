@@ -50,20 +50,6 @@ module.exports.savePost = function(application, req, res) {
 }
 
 /**
- * @description Save a new Title post
- * 
- * @param {Object} application
- * @param {Object} request
- * @param {Object} response
- */
-module.exports.putTitle = function(application, req, res) {
-    let connection = application.config.dbConnection;
-    let PostModel = new application.app.models.PostModel(connection);
-    let data = req.body;
-    PostModel.putTitle(data, req, res);
-}
-
-/**
  * @description Delete post
  * 
  * @param {Object} application

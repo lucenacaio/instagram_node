@@ -6,7 +6,6 @@ module.exports = function(application) {
      * @method GET @host /uploads/:image
      */
     application.get('/uploads/:image', function(req, res) {
-        res.setHeader("Access-Control-Allow-Origin", "*");
         application.app.controllers.image.getPicture(application, req, res);
     });
 
@@ -18,7 +17,6 @@ module.exports = function(application) {
      * @return [Array] posts
      */
     application.get('/api/post', function(req, res) {
-        res.setHeader("Access-Control-Allow-Origin", "*");
         application.app.controllers.post.getPost(application, req, res);
     });
 
@@ -44,22 +42,21 @@ module.exports = function(application) {
      * @returns {Object} status = 1 on success and status = 0 on error
      */
     application.post('/api/post', function(req, res) {
-        res.setHeader("Access-Control-Allow-Origin", "*");
         application.app.controllers.post.savePost(application, req, res);
     });
 
 
     /**
-     * @description PUT a new Title on a post
+     * @description ADD comment to picture
      * 
-     * @method PUT @host /api/post/:id
+     * @method POST @host /api/post/:id
      * 
-     * @param {string} Title
+     * @param {string} Comment
      * 
      * @returns {Object} status = 1 on success and status = 0 on error
      */
-    application.put('/api/post/:id', function(req, res) {
-        application.app.controllers.post.putTitle(application, req, res)
+    application.post('/api/post/:id', function(req, res) {
+        application.app.controllers.comment.addComment(application, req, res)
     });
 
     /**
