@@ -1,3 +1,5 @@
+const jwt = require('jsonwebtoken');
+
 /**
  * @description GET all posts
  * 
@@ -34,19 +36,29 @@ module.exports.getPostById = function(application, req, res) {
  */
 module.exports.savePost = function(application, req, res) {
     let connection = application.config.dbConnection;
-    let PostModel = new application.app.models.PostModel(connection);
-    let pathUtil = new application.app.util.pathUtil();
-    var moveImage = pathUtil.changePathImage(req, res);
-    if (moveImage.status === 0) {
-        res.status(500).json(moveImage);
-        return;
-    }
-    let dataToSend = {
-        Title: req.body.Title,
-        img_name: moveImage.file_name,
-        img_url: moveImage.url_img_server
-    };
-    PostModel.savePost(dataToSend, req, res);
+    let authenticateUtil = new application.app.util.authenticateUtil(application);
+    let token_req = req.body.token || req.query.token || req.headers['x-access-token'];
+    jwt.verify(token_req, application.get('superSecret'), function(err, decoded) {
+        if (err) {
+            res.status(400).json({ success: false });
+            return;
+        } else {
+            let PostModel = new application.app.models.PostModel(connection);
+            let pathUtil = new application.app.util.pathUtil();
+            var moveImage = pathUtil.changePathImage(req, res);
+            if (moveImage.status === 0) {
+                res.status(500).json(moveImage);
+                return;
+            }
+            let user = decoded.username;
+            let dataToSend = {
+                Title: req.body.Title,
+                img_name: moveImage.file_name,
+                img_url: moveImage.url_img_server
+            };
+            PostModel.savePost(dataToSend, user, req, res);
+        }
+    });
 }
 
 /**
