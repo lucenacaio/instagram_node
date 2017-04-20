@@ -1,14 +1,11 @@
 var mongo = require("mongodb");
-
+var mongoose = require('mongoose');
 var url = "localhost";
 var port = 27017;
+const connection = mongoose.connect('mongodb://' + url + '/instagram');
 
 var connMongoDB = function() {
-    var db = new mongo.Db(
-        'instagram',
-        new mongo.Server(url, port, {}), {}
-    );
-    return db;
+    return connection;
 }
 
 module.exports = function() {

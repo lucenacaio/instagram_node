@@ -17,6 +17,8 @@
     "express-session": "^1.15.2",
     "express-validator": "^2.20.8",
     "jsonwebtoken": "^7.3.0",
-    "mongodb": "^2.2.25"
+    "mongodb": "^2.2.25",
+    "mongoose": "^4.9.5",
+    "mpromise": "^0.5.5"
   }
 }
