@@ -39,9 +39,8 @@ UsersModel.prototype.authenticate = function(application, res, user) {
         mongoclient.collection(COLLECTION_NAME, function(err, collection) {
             collection.find(user).toArray(function(err, result) {
                 if (result.length > 0) {
-                    let token = jwt.sign(user, application.get('superSecret'), {
-                        expiresIn: 60 * 60 * 24 // expires in 24 hours
-                    });
+                    let authenticateUtil = new application.app.util.authenticateUtil(application);
+                    let token = authenticateUtil.generateToken(user);
                     let userResponse = {
                         success: true,
                         username: result[0].username,

@@ -96,20 +96,20 @@ module.exports = function(application) {
     /**
      * @description ADD comment to picture
      *  require x-access-token
-     * @method POST @host /api/post/:id
+     * @method POST @host /api/post/:id/comment
      * 
      * @param {string} Comment
      * 
      * @returns {Object} status = 1 on success and status = 0 on error
      */
-    application.post('/api/post/:id', function(req, res) {
+    application.post('/api/post/:id/comment', function(req, res) {
         application.app.controllers.comment.addComment(application, req, res)
     });
 
     /**
      * @description DELETE an especific comment
      *  require x-access-token
-     * @method DELETE @host /api/post/:id
+     * @method DELETE @host /api/post/:id/comment/:id_comment
      * 
      * @returns {Object} status = 1 on success and status = 0 on error
      */
