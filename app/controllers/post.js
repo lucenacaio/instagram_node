@@ -36,7 +36,6 @@ module.exports.getPostById = function(application, req, res) {
  */
 module.exports.savePost = function(application, req, res) {
     let connection = application.config.dbConnection;
-    let authenticateUtil = new application.app.util.authenticateUtil(application);
     let token_req = req.body.token || req.query.token || req.headers['x-access-token'];
     jwt.verify(token_req, application.get('superSecret'), function(err, decoded) {
         if (err) {
@@ -54,7 +53,8 @@ module.exports.savePost = function(application, req, res) {
             let dataToSend = {
                 Title: req.body.Title,
                 img_name: moveImage.file_name,
-                img_url: moveImage.url_img_server
+                img_url: moveImage.url_img_server,
+                timestamp: new Date().getTime()
             };
             PostModel.savePost(dataToSend, user, req, res);
         }
