@@ -12,18 +12,8 @@ var UserSchema = new Schema({
         img_name: String,
         img_url: String
     },
-    followers: [{
-        _id: Objectid,
-        username: String,
-        name: String,
-        profile_picture: String
-    }],
-    following: [{
-        _id: Objectid,
-        username: String,
-        name: String,
-        profile_picture: String
-    }]
+    followers: [{ type: Schema.ObjectId, ref: 'User', unique: true, index: true }],
+    following: [{ type: Schema.ObjectId, ref: 'User', unique: true, index: true }]
 });
 
 module.exports = function() {

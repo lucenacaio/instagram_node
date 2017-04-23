@@ -1,6 +1,7 @@
 const crypto = require("crypto");
 const jwt = require('jsonwebtoken');
 const secret = 'I6nStO4gr4m';
+const ObjectID = require('mongoose').Types.ObjectId;
 
 function UsersModel(application) {
     this.connection = application.config.dbConnection();
@@ -21,11 +22,11 @@ UsersModel.prototype.authenticate = function(application, res, user) {
     let encryptedPassword = crypto.createHmac('sha256', secret).update(user.password).digest('hex');
     user.password = encryptedPassword;
     let Person = this._model;
-    Person.findOne(user, 'username name profile_image', function(err, person) {
+    Person.findOne(user, '_id username name profile_image', function(err, person) {
         if (err) return res.status(400).json({ success: false });
         if (person) {
             let authenticateUtil = new application.app.util.authenticateUtil(application);
-            let token = authenticateUtil.generateToken(user);
+            let token = authenticateUtil.generateToken(person);
             let userResponse = {
                 success: true,
                 _id: person._id,
@@ -39,16 +40,34 @@ UsersModel.prototype.authenticate = function(application, res, user) {
     });
 }
 
-UsersModel.prototype.follow = function(req, res, user, userTofollow) {
-    // console.log("User ", user);
-    // console.log("User To FOllow", userTofollow);
-    // let Person = this._model(userTofollow);
-    // Person.findOneAndUpdate({ username: user.username }, '', function(err, response) {
-    //     if (err) return res.status(400).json({ success: false });
-    //     if (response) {
-
-    //     }
-    // });
+UsersModel.prototype.follow = function(req, res, userReq, userTofollow) {
+    let User = this._model;
+    User.findOne({ _id: ObjectID(userTofollow) }, function(err, user) {
+        if (user.followers.indexOf("" + userReq._doc._id + "") != -1) {
+            res.status(400).json({ success: false });
+            return;
+        }
+        user.followers.push(userReq._doc._id);
+        var followedUser = userTofollow;
+        user.save(function(err) {
+            if (err) {
+                res.status(400).json({ success: false })
+                return;
+            } else {
+                User.findOne({ username: userReq._doc.username }, function(err, user) {
+                    user.following.push(followedUser);
+                    user.save(function(err) {
+                        if (err) {
+                            res.status(400).json({ success: false })
+                            return;
+                        } else {
+                            res.status(200).json({ success: true })
+                        }
+                    });
+                });
+            }
+        });
+    });
 }
 
 module.exports = function(application) {
