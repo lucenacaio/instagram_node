@@ -67,3 +67,24 @@ module.exports.follow = function(application, req, res) {
         }
     });
 }
+
+/**
+ * @description Method to get all data from user logged
+ * 
+ * @param {Object} application
+ * @param {Object} request
+ * @param {Object} response
+ */
+module.exports.getAllDataFromUser = function(application, req, res) {
+    let connection = application.config.dbConnection();
+    let UsersModel = new application.app.models.UsersModel(application);
+    let token_req = req.body.token || req.query.token || req.headers['x-access-token'];
+    jwt.verify(token_req, application.get('superSecret'), function(err, decoded) {
+        if (err) {
+            res.status(400).json({ success: false });
+            return;
+        } else {
+            UsersModel.getAllDataFromUser(application, res, decoded);
+        }
+    });
+}

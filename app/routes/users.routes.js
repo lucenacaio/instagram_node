@@ -34,4 +34,13 @@ module.exports = function(application) {
         application.app.controllers.user.authenticate(application, req, res);
     });
 
+    /**
+     * @description GET all data from logged user
+     * 
+     * @method GET @host /user
+     */
+    application.get('/api/user', function(req, res) {
+        application.app.controllers.user.getAllDataFromUser(application, req, res);
+    });
+
 }

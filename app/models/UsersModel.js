@@ -44,6 +44,19 @@ UsersModel.prototype.authenticate = function(application, res, user) {
     });
 }
 
+UsersModel.prototype.getAllDataFromUser = function(req, res, userReq) {
+    let User = this._model;
+    User.find({
+            _id: userReq._id
+        }, '_id username name email profile_image following followers')
+        .populate('following', 'username _id name profile_image.img_url')
+        .populate("followers", 'username _id name profile_image.img_url')
+        .exec(function(err, users) {
+            if (err) res.status(400).json({ success: false });
+            else res.status(200).json(users);
+        });
+}
+
 UsersModel.prototype.follow = function(req, res, userReq, userTofollow) {
     let User = this._model;
     console.log(userReq);
