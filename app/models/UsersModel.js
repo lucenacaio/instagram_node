@@ -26,7 +26,11 @@ UsersModel.prototype.authenticate = function(application, res, user) {
         if (err) return res.status(400).json({ success: false });
         if (person) {
             let authenticateUtil = new application.app.util.authenticateUtil(application);
-            let token = authenticateUtil.generateToken(person);
+            let userToToken = {
+                username: person.username,
+                _id: person._id
+            }
+            let token = authenticateUtil.generateToken(userToToken);
             let userResponse = {
                 success: true,
                 _id: person._id,
@@ -42,19 +46,20 @@ UsersModel.prototype.authenticate = function(application, res, user) {
 
 UsersModel.prototype.follow = function(req, res, userReq, userTofollow) {
     let User = this._model;
+    console.log(userReq);
     User.findOne({ _id: ObjectID(userTofollow) }, function(err, user) {
-        if (user.followers.indexOf("" + userReq._doc._id + "") != -1) {
+        if (user.followers.indexOf("" + userReq._id + "") != -1) {
             res.status(400).json({ success: false });
             return;
         }
-        user.followers.push(userReq._doc._id);
+        user.followers.push(userReq._id);
         var followedUser = userTofollow;
         user.save(function(err) {
             if (err) {
                 res.status(400).json({ success: false })
                 return;
             } else {
-                User.findOne({ username: userReq._doc.username }, function(err, user) {
+                User.findOne({ username: userReq.username }, function(err, user) {
                     user.following.push(followedUser);
                     user.save(function(err) {
                         if (err) {
