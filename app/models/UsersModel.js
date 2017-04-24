@@ -5,7 +5,7 @@ const secret = 'I6nStO4gr4m';
 const ObjectID = require('mongoose').Types.ObjectId;
 
 function UsersModel(application) {
-    this.connection = application.config.dbConnection();
+    this.connection = application.dbConnection();
     this._model = this.connection.model('User', application.app.schemas.user);
 }
 
