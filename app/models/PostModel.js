@@ -7,7 +7,10 @@ const ObjectID = require('mongoose').Types.ObjectId;
  */
 function PostModel(application) {
     this.connection = application.config.dbConnection();
-    this._model = this.connection.model('Post', application.app.schemas.post);
+    this._model = {
+        Post: this.connection.model('Post', application.app.schemas.post),
+        User: this.connection.model('User', application.app.schemas.user)
+    };
 }
 
 /**
@@ -16,13 +19,13 @@ function PostModel(application) {
  * @param {Object} response 
  * @returns [Array] All posts on MongoDB
  */
-PostModel.prototype.getAllPosts = function(res) {
-    let post = this._model;
-    User.findOne({
-            _id: userReq._id
-        }, '_id username name email profile_image following followers')
-        .populate('following', 'username _id name profile_image.img_url')
-        .populate("followers", 'username _id name profile_image.img_url')
+PostModel.prototype.getPostFromUser = function(res, user) {
+    let Post = this._model.Post;
+    Post.find({
+            user: ObjectID(user)
+        })
+        .populate('user', 'username _id name profile_image.img_url')
+        .populate('comments.user', 'username _id name profile_image.img_url')
         .exec(function(err, users) {
             if (err) res.status(400).json({ success: false });
             else res.status(200).json(users);
@@ -35,16 +38,18 @@ PostModel.prototype.getAllPosts = function(res) {
  * @param {Object} response 
  * @returns [Array] All posts on MongoDB
  */
-PostModel.prototype.getPostById = function(req, res) {
-    this._connection.open(function(err, mongoclient) {
-        mongoclient.collection(COLLECTION_NAME, function(err, collection) {
-            collection.find(ObjectID(req.params.id)).toArray(function(err, result) {
-                if (err) res.json(err);
-                else res.json(result);
-                mongoclient.close();
-            });
+PostModel.prototype.getPostById = function(application, req, res) {
+    let post = ObjectID(req.params.id);
+    let Post = this._model.Post;
+    Post.findOne({
+            _id: post
+        })
+        .populate('user', 'username _id name profile_image.img_url')
+        .populate('comments.user', 'username _id name profile_image.img_url')
+        .exec(function(err, post) {
+            if (err) res.status(400).json({ success: false });
+            else res.status(200).json(post);
         });
-    });
 }
 
 
@@ -55,7 +60,7 @@ PostModel.prototype.getPostById = function(req, res) {
  */
 PostModel.prototype.savePost = function(data, user, req, res) {
     data.user = ObjectID(user);
-    let Post = new this._model(data);
+    let Post = new this._model.Post(data);
     Post.save(function(err, post) {
         if (err) {
             res.status(400).json({ success: false })
@@ -67,78 +72,23 @@ PostModel.prototype.savePost = function(data, user, req, res) {
 /**
  * @description Delete post
  * 
- * @returns {Object} 1 if success or 0 if error
+ * @returns {Object} success true or false
  */
-PostModel.prototype.deletePost = function(req, res) {
-    this._connection.open(function(err, mongoclient) {
-        mongoclient.collection(COLLECTION_NAME, function(err, collection) {
-            collection.remove({
-                    _id: ObjectID(req.params.id)
-                },
-                function(err, records) {
-                    if (err) res.json({ status: 0 });
-                    else res.json({ status: 1 });
-                    mongoclient.close();
-                });
-        });
+PostModel.prototype.deletePost = function(data, user, req, res) {
+    let Post = this._model.Post;
+    Post.remove({ _id: ObjectID(data), user: ObjectID(user) }, function(err, success) {
+        console.log(success);
+        if (err) {
+            res.status(400).json({ success: false });
+        } else {
+            if (success.result.n > 0) {
+                res.status(200).json({ success: true })
+            } else {
+                res.status(400).json({ success: false });
+            }
+        }
     });
 }
-
-
-/**
- * @description Add comment to picture
- * 
- * @returns {Object} 1 if success or 0 if error
- */
-PostModel.prototype.addComment = function(data, req, res) {
-    this._connection.open(function(err, mongoclient) {
-        mongoclient.collection(COLLECTION_NAME, function(err, collection) {
-            collection.update({
-                    _id: ObjectID(req.params.id)
-                }, {
-                    $push: {
-                        comments: {
-                            id_comment: new ObjectID(),
-                            comment: req.body.comment,
-                            time: new Date().getTime()
-                        }
-                    }
-                }, {},
-                function(err, records) {
-                    if (err) res.json({ status: 0 });
-                    else res.json({ status: 1 });
-                    mongoclient.close();
-                });
-        });
-    });
-}
-
-/**
- * @description Delete post
- * 
- * @returns {Object} 1 if success or 0 if error
- */
-PostModel.prototype.removeComment = function(req, res) {
-    this._connection.open(function(err, mongoclient) {
-        mongoclient.collection(COLLECTION_NAME, function(err, collection) {
-            collection.update({
-                    _id: ObjectID(req.params.id)
-                }, {
-                    $pull: {
-                        comments: {
-                            id_comment: ObjectID(req.params.id_comment)
-                        }
-                    }
-                }, {},
-                function(err, records) {
-                    if (err) res.json({ status: 0 });
-                    else res.json({ status: 1 });
-                    mongoclient.close();
-                });
-        });
-    });
-}
-
 
 module.exports = function(application) {
     return PostModel;

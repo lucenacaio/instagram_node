@@ -15,6 +15,9 @@ var PostSchema = new Schema({
         comment: String,
         timestamp: { type: Date, default: Date.now }
     }],
+    likes: [{
+        user: { type: Schema.ObjectId, ref: 'User' }
+    }],
     status: String
 }, {
     timestamps: true
