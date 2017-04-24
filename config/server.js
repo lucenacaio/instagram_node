@@ -31,7 +31,7 @@ app.use(function(req, res, next) {
     }
     next();
 });
-consign({ cwd: process.cwd() })
+consign()
     .include('app/routes')
     .then('config/dbConnection.js')
     .then('app/schemas')
