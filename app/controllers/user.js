@@ -1,3 +1,4 @@
+"use strict";
 const jwt = require('jsonwebtoken');
 /**
  * @description Call for user addition
