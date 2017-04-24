@@ -35,7 +35,7 @@ app.use(function(req, res, next) {
 consign()
     .include('app/routes')
     .then('config/dbConnection.js')
-    .then('../app/schemas')
+    .then('app/schemas')
     .then('app/models')
     .then('app/util')
     .then('app/controllers')

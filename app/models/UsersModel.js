@@ -1,3 +1,4 @@
+"use strict";
 const crypto = require("crypto");
 const jwt = require('jsonwebtoken');
 const secret = 'I6nStO4gr4m';
