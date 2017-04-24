@@ -31,7 +31,7 @@ app.use(function(req, res, next) {
     }
     next();
 });
-console.log("APpp ", process.cwd());
+console.log("APpp ", _dirname);
 consign({ cwd: process.cwd() })
     .include('app/routes')
     .then('config/dbConnection.js')
