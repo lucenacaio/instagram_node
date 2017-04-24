@@ -32,10 +32,10 @@ app.use(function(req, res, next) {
     next();
 });
 
-consign({ cwd: process.cwd() + "/app" })
+consign()
     .include('app/routes')
     .then('config/dbConnection.js')
-    .then('app/schemas')
+    .then(process.cwd() + '/app/schemas')
     .then('app/models')
     .then('app/util')
     .then('app/controllers')
