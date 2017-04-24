@@ -32,7 +32,7 @@ app.use(function(req, res, next) {
     next();
 });
 console.log("APpp ", process.cwd());
-consign()
+consign({ cwd: process.cwd() })
     .include('app/routes')
     .then('config/dbConnection.js')
     .then('app/schemas')
