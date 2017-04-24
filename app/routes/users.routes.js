@@ -20,7 +20,7 @@ module.exports = function(application) {
      * require x-access-token
      */
     application.post('/api/user/:id/follow', function(req, res) {
-        application.app.controllers.user.follow(application, req, res);
+        application.controllers.user.follow(application, req, res);
     });
 
     /**
@@ -31,7 +31,7 @@ module.exports = function(application) {
      * @param  {string} password
      */
     application.post('/authenticate', function(req, res) {
-        application.app.controllers.user.authenticate(application, req, res);
+        application.controllers.user.authenticate(application, req, res);
     });
 
     /**
@@ -40,7 +40,7 @@ module.exports = function(application) {
      * @method GET @host /user
      */
     application.get('/api/user', function(req, res) {
-        application.app.controllers.user.getAllDataFromUser(application, req, res);
+        application.controllers.user.getAllDataFromUser(application, req, res);
     });
 
 }

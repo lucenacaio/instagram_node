@@ -8,7 +8,7 @@ module.exports = function(application) {
      * @return [Array] posts
      */
     application.get('/api/post', function(req, res) {
-        application.app.controllers.post.getPostFromUser(application, req, res);
+        application.controllers.post.getPostFromUser(application, req, res);
     });
 
     /**
@@ -19,7 +19,7 @@ module.exports = function(application) {
      * @return [Array] post
      */
     application.get('/api/post/:id', function(req, res) {
-        application.app.controllers.post.getPostById(application, req, res);
+        application.controllers.post.getPostById(application, req, res);
     });
 
     /**
@@ -33,7 +33,7 @@ module.exports = function(application) {
      * @returns {Object} status = 1 on success and status = 0 on error
      */
     application.post('/api/post', function(req, res) {
-        application.app.controllers.post.savePost(application, req, res);
+        application.controllers.post.savePost(application, req, res);
     });
 
     /**
@@ -46,7 +46,7 @@ module.exports = function(application) {
      * @returns {Object} status = 1 on success and status = 0 on error
      */
     application.delete('/api/post/:id', function(req, res) {
-        application.app.controllers.post.deletePost(application, req, res);
+        application.controllers.post.deletePost(application, req, res);
     });
 
     /**
@@ -59,7 +59,7 @@ module.exports = function(application) {
      * @returns {Object} status = 1 on success and status = 0 on error
      */
     application.post('/api/post/:id/comment', function(req, res) {
-        application.app.controllers.comment.addComment(application, req, res)
+        application.controllers.comment.addComment(application, req, res)
     });
 
     /**
@@ -70,6 +70,6 @@ module.exports = function(application) {
      * @returns {Object} status = 1 on success and status = 0 on error
      */
     application.delete('/api/post/:id/comment/:id_comment', function(req, res) {
-        application.app.controllers.comment.removeComment(application, req, res);
+        application.controllers.comment.removeComment(application, req, res);
     });
 }

@@ -21,7 +21,7 @@ app.use(function(req, res, next) {
     if (req.url.indexOf('/api/') !== -1) {
         let token = req.body.token || req.query.token || req.headers['x-access-token'];
         if (token) {
-            let authenticateUtil = new app.app.util.authenticateUtil(app);
+            let authenticateUtil = new app.util.authenticateUtil(app);
             authenticateUtil.verify(req, res, token);
         } else {
             return res.status(403).send({
@@ -32,8 +32,8 @@ app.use(function(req, res, next) {
     }
     next();
 });
-consign({ cwd: process.cwd() })
-    .include('app/routes')
+consign({ cwd: process.cwd() + "/app" })
+    .include('/routes')
     .then('/schemas')
     .then('/models')
     .then('/util')

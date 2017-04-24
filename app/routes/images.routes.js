@@ -5,7 +5,7 @@ module.exports = function(application) {
      * @method GET @host /uploads/:image
      */
     application.get('/uploads/:image', function(req, res) {
-        application.app.controllers.image.getPicture(application, req, res);
+        application.controllers.image.getPicture(application, req, res);
     });
 
     /**
@@ -14,6 +14,6 @@ module.exports = function(application) {
      * @method GET @host /uploads/profile/:image
      */
     application.get('/uploads/profile/:image', function(req, res) {
-        application.app.controllers.image.getProfilePicture(application, req, res);
+        application.controllers.image.getProfilePicture(application, req, res);
     });
 }

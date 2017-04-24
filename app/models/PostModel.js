@@ -9,8 +9,8 @@ const ObjectID = require('mongoose').Types.ObjectId;
 function PostModel(application) {
     this.connection = application.config.dbConnection();
     this._model = {
-        Post: this.connection.model('Post', application.app.schemas.post),
-        User: this.connection.model('User', application.app.schemas.user)
+        Post: this.connection.model('Post', application.schemas.post),
+        User: this.connection.model('User', application.schemas.user)
     };
 }
 
@@ -78,7 +78,6 @@ PostModel.prototype.savePost = function(data, user, req, res) {
 PostModel.prototype.deletePost = function(data, user, req, res) {
     let Post = this._model.Post;
     Post.remove({ _id: ObjectID(data), user: ObjectID(user) }, function(err, success) {
-        console.log(success);
         if (err) {
             res.status(400).json({ success: false });
         } else {
