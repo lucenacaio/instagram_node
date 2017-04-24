@@ -33,7 +33,7 @@ app.use(function(req, res, next) {
     next();
 });
 consign({ cwd: process.cwd() })
-    .include('/routes')
+    .include('app/routes')
     .then('/schemas')
     .then('/models')
     .then('/util')
