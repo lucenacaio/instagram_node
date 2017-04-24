@@ -1,3 +1,4 @@
+"use strict";
 var express = require('express');
 var consign = require('consign');
 var bodyParser = require('body-parser');
@@ -20,7 +21,7 @@ app.use(function(req, res, next) {
     if (req.url.indexOf('/api/') !== -1) {
         let token = req.body.token || req.query.token || req.headers['x-access-token'];
         if (token) {
-            let authenticateUtil = new app.app.util.authenticateUtil(app);
+            let authenticateUtil = new app.util.authenticateUtil(app);
             authenticateUtil.verify(req, res, token);
         } else {
             return res.status(403).send({
@@ -31,14 +32,14 @@ app.use(function(req, res, next) {
     }
     next();
 });
-
-consign()
-    .include('app/routes')
-    .then('config/dbConnection.js')
-    .then('app/schemas')
-    .then('app/models')
-    .then('app/util')
-    .then('app/controllers')
+consign({ cwd: process.cwd() + "/app" })
+    .include('/routes')
+    .then('/schemas')
+    .then('/models')
+    .then('/util')
+    .then('/controllers')
     .into(app);
+
+consign().include('/config/dbConnection.js').into(app);
 
 module.exports = app;

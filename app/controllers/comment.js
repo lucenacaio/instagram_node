@@ -1,3 +1,4 @@
+"use strict";
 const jwt = require('jsonwebtoken');
 
 /**
@@ -14,7 +15,7 @@ module.exports.addComment = function(application, req, res) {
             res.status(400).json({ success: false });
             return;
         } else {
-            let CommentModel = new application.app.models.CommentModel(application);
+            let CommentModel = new application.models.CommentModel(application);
             let post = req.params.id;
             let comment = {
                 user: decoded._id,
@@ -35,6 +36,6 @@ module.exports.addComment = function(application, req, res) {
  */
 module.exports.removeComment = function(application, req, res) {
     let connection = application.config.dbConnection;
-    let PostModel = new application.app.models.PostModel(connection);
+    let PostModel = new application.models.PostModel(connection);
     PostModel.removeComment(req, res);
 }

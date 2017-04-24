@@ -1,3 +1,4 @@
+"use strict";
 const ObjectID = require('mongoose').Types.ObjectId;
 
 /**
@@ -8,8 +9,8 @@ const ObjectID = require('mongoose').Types.ObjectId;
 function CommentModel(application) {
     this.connection = application.config.dbConnection();
     this._model = {
-        Post: this.connection.model('Post', application.app.schemas.post),
-        User: this.connection.model('User', application.app.schemas.user)
+        Post: this.connection.model('Post', application.schemas.post),
+        User: this.connection.model('User', application.schemas.user)
     };
 }
 

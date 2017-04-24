@@ -1,3 +1,4 @@
+"use strict";
 const jwt = require('jsonwebtoken');
 
 /**
@@ -14,7 +15,7 @@ module.exports.getPostFromUser = function(application, req, res) {
             res.status(400).json({ success: false });
             return;
         } else {
-            let PostModel = new application.app.models.PostModel(application);
+            let PostModel = new application.models.PostModel(application);
             PostModel.getPostFromUser(res, decoded._id);
         }
     });
@@ -28,7 +29,7 @@ module.exports.getPostFromUser = function(application, req, res) {
  * @param {Object} response
  */
 module.exports.getPostById = function(application, req, res) {
-    let PostModel = new application.app.models.PostModel(application);
+    let PostModel = new application.models.PostModel(application);
     PostModel.getPostById(application, req, res);
 }
 
@@ -47,8 +48,8 @@ module.exports.savePost = function(application, req, res) {
             res.status(400).json({ success: false });
             return;
         } else {
-            let PostModel = new application.app.models.PostModel(application);
-            let pathUtil = new application.app.util.pathUtil();
+            let PostModel = new application.models.PostModel(application);
+            let pathUtil = new application.util.pathUtil();
             var moveImage = pathUtil.changePathImage(req, res);
             if (moveImage.status === 0) {
                 res.status(500).json(moveImage);
@@ -81,7 +82,7 @@ module.exports.deletePost = function(application, req, res) {
             res.status(400).json({ success: false });
             return;
         } else {
-            let PostModel = new application.app.models.PostModel(application);
+            let PostModel = new application.models.PostModel(application);
             let data = req.params.id;
             PostModel.deletePost(data, decoded._id, req, res);
         }

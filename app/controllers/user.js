@@ -1,3 +1,4 @@
+"use strict";
 const jwt = require('jsonwebtoken');
 /**
  * @description Call for user addition
@@ -8,8 +9,8 @@ const jwt = require('jsonwebtoken');
  */
 module.exports.addUser = function(application, req, res) {
     let user = req.body;
-    let UsersModel = new application.app.models.UsersModel(application);
-    let pathUtil = new application.app.util.pathUtil();
+    let UsersModel = new application.models.UsersModel(application);
+    let pathUtil = new application.util.pathUtil();
     var profile_picture = pathUtil.saveProfilePicture(req, res);
     if (profile_picture.status === 0) {
         res.status(500).json(profile_picture);
@@ -37,7 +38,7 @@ module.exports.addUser = function(application, req, res) {
  */
 module.exports.authenticate = function(application, req, res) {
     let user = req.body;
-    let UsersModel = new application.app.models.UsersModel(application);
+    let UsersModel = new application.models.UsersModel(application);
     UsersModel.authenticate(application, res, user);
 }
 
@@ -50,7 +51,7 @@ module.exports.authenticate = function(application, req, res) {
  * @param {Object} response
  */
 module.exports.follow = function(application, req, res) {
-    let UsersModel = new application.app.models.UsersModel(application);
+    let UsersModel = new application.models.UsersModel(application);
     let token_req = req.body.token || req.query.token || req.headers['x-access-token'];
     jwt.verify(token_req, application.get('superSecret'), function(err, decoded) {
         if (err) {
@@ -71,7 +72,7 @@ module.exports.follow = function(application, req, res) {
  * @param {Object} response
  */
 module.exports.getAllDataFromUser = function(application, req, res) {
-    let UsersModel = new application.app.models.UsersModel(application);
+    let UsersModel = new application.models.UsersModel(application);
     let token_req = req.body.token || req.query.token || req.headers['x-access-token'];
     jwt.verify(token_req, application.get('superSecret'), function(err, decoded) {
         if (err) {

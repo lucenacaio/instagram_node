@@ -1,3 +1,4 @@
+"use strict";
 var fs = require('fs');
 
 function pathUtil() {}
@@ -30,7 +31,8 @@ pathUtil.prototype.saveProfilePicture = function(req, res) {
         file_name: img_name,
         url_img_server: 'http://' + req.get('host') + "/uploads/profile/" + img_name
     };
-    fs.rename(sourcePath, targetPath, function(err) {
+    fs.rename(sourcePath, targetPath, function(err, success) {
+        console.log("SUCC", success);
         if (err) {
             return { status: 0 };
         }

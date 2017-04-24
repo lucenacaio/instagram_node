@@ -1,3 +1,4 @@
+"use strict";
 const crypto = require("crypto");
 const jwt = require('jsonwebtoken');
 const secret = 'I6nStO4gr4m';
@@ -5,7 +6,7 @@ const ObjectID = require('mongoose').Types.ObjectId;
 
 function UsersModel(application) {
     this.connection = application.config.dbConnection();
-    this._model = this.connection.model('User', application.app.schemas.user);
+    this._model = this.connection.model('User', application.schemas.user);
 }
 
 UsersModel.prototype.addUser = function(req, res, user) {
@@ -25,7 +26,7 @@ UsersModel.prototype.authenticate = function(application, res, user) {
     Person.findOne(user, '_id username name profile_image', function(err, person) {
         if (err) return res.status(400).json({ success: false });
         if (person) {
-            let authenticateUtil = new application.app.util.authenticateUtil(application);
+            let authenticateUtil = new application.util.authenticateUtil(application);
             let userToToken = {
                 username: person.username,
                 _id: person._id

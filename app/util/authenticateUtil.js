@@ -1,3 +1,4 @@
+"use strict";
 var fs = require('fs');
 
 const jwt = require('jsonwebtoken');
