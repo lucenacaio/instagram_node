@@ -13,7 +13,7 @@ module.exports = function(application) {
      * 
      * @method GET @host /uploads/profile/:image
      */
-    application.get('*/uploads/profile/:image', function(req, res) {
+    application.get('/uploads/profile/:image', function(req, res) {
         application.controllers.image.getProfilePicture(application, req, res);
     });
 }
