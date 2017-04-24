@@ -8,10 +8,7 @@ const jwt = require('jsonwebtoken');
  */
 module.exports.addUser = function(application, req, res) {
     let user = req.body;
-
-    let connection = application.config.dbConnection();
     let UsersModel = new application.app.models.UsersModel(application);
-
     let pathUtil = new application.app.util.pathUtil();
     var profile_picture = pathUtil.saveProfilePicture(req, res);
     if (profile_picture.status === 0) {
@@ -40,7 +37,6 @@ module.exports.addUser = function(application, req, res) {
  */
 module.exports.authenticate = function(application, req, res) {
     let user = req.body;
-    let connection = application.config.dbConnection();
     let UsersModel = new application.app.models.UsersModel(application);
     UsersModel.authenticate(application, res, user);
 }
@@ -54,7 +50,6 @@ module.exports.authenticate = function(application, req, res) {
  * @param {Object} response
  */
 module.exports.follow = function(application, req, res) {
-    let connection = application.config.dbConnection();
     let UsersModel = new application.app.models.UsersModel(application);
     let token_req = req.body.token || req.query.token || req.headers['x-access-token'];
     jwt.verify(token_req, application.get('superSecret'), function(err, decoded) {
@@ -76,7 +71,6 @@ module.exports.follow = function(application, req, res) {
  * @param {Object} response
  */
 module.exports.getAllDataFromUser = function(application, req, res) {
-    let connection = application.config.dbConnection();
     let UsersModel = new application.app.models.UsersModel(application);
     let token_req = req.body.token || req.query.token || req.headers['x-access-token'];
     jwt.verify(token_req, application.get('superSecret'), function(err, decoded) {

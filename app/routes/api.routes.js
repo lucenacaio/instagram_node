@@ -8,7 +8,7 @@ module.exports = function(application) {
      * @return [Array] posts
      */
     application.get('/api/post', function(req, res) {
-        application.app.controllers.post.getPost(application, req, res);
+        application.app.controllers.post.getPostFromUser(application, req, res);
     });
 
     /**
@@ -36,6 +36,18 @@ module.exports = function(application) {
         application.app.controllers.post.savePost(application, req, res);
     });
 
+    /**
+     * @description DELETE a post
+     *  require x-access-token
+     * @method DELETE @host /api/post/:id
+     * 
+     * @param {string} id     
+     * 
+     * @returns {Object} status = 1 on success and status = 0 on error
+     */
+    application.delete('/api/post/:id', function(req, res) {
+        application.app.controllers.post.deletePost(application, req, res);
+    });
 
     /**
      * @description ADD comment to picture

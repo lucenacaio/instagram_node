@@ -7,10 +7,17 @@ const jwt = require('jsonwebtoken');
  * @param {Object} request
  * @param {Object} response
  */
-module.exports.getPost = function(application, req, res) {
-    let connection = application.config.dbConnection;
-    let PostModel = new application.app.models.PostModel(connection);
-    PostModel.getAllPosts(res);
+module.exports.getPostFromUser = function(application, req, res) {
+    let token_req = req.body.token || req.query.token || req.headers['x-access-token'];
+    jwt.verify(token_req, application.get('superSecret'), function(err, decoded) {
+        if (err) {
+            res.status(400).json({ success: false });
+            return;
+        } else {
+            let PostModel = new application.app.models.PostModel(application);
+            PostModel.getPostFromUser(res, decoded._id);
+        }
+    });
 }
 
 /**
@@ -21,9 +28,8 @@ module.exports.getPost = function(application, req, res) {
  * @param {Object} response
  */
 module.exports.getPostById = function(application, req, res) {
-    let connection = application.config.dbConnection;
-    let PostModel = new application.app.models.PostModel(connection);
-    PostModel.getPostById(req, res);
+    let PostModel = new application.app.models.PostModel(application);
+    PostModel.getPostById(application, req, res);
 }
 
 /**
@@ -69,7 +75,15 @@ module.exports.savePost = function(application, req, res) {
  * @param {Object} response
  */
 module.exports.deletePost = function(application, req, res) {
-    let connection = application.config.dbConnection;
-    let PostModel = new application.app.models.PostModel(connection);
-    PostModel.deletePost(req, res);
+    let token_req = req.body.token || req.query.token || req.headers['x-access-token'];
+    jwt.verify(token_req, application.get('superSecret'), function(err, decoded) {
+        if (err) {
+            res.status(400).json({ success: false });
+            return;
+        } else {
+            let PostModel = new application.app.models.PostModel(application);
+            let data = req.params.id;
+            PostModel.deletePost(data, decoded._id, req, res);
+        }
+    });
 }
