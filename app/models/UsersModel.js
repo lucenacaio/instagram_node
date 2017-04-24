@@ -46,7 +46,7 @@ UsersModel.prototype.authenticate = function(application, res, user) {
 
 UsersModel.prototype.getAllDataFromUser = function(req, res, userReq) {
     let User = this._model;
-    User.find({
+    User.findOne({
             _id: userReq._id
         }, '_id username name email profile_image following followers')
         .populate('following', 'username _id name profile_image.img_url')

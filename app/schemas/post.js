@@ -1,16 +1,18 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-
 var PostSchema = new Schema({
-    name: String,
-    password: String,
-    username: { type: String, lowercase: true, index: true, unique: true },
-    email: String,
-    profile_image: {
+    user: { type: Schema.ObjectId, ref: 'User', unique: true, index: true },
+    post_picture: {
         img_name: String,
         img_url: String
-    }
+    },
+    comments: [{
+        user: { type: Schema.ObjectId, ref: 'User', unique: true, index: true },
+        comment: String,
+        timestamp: { type: Date, default: Date.now }
+    }],
+    status: String
 });
 
 module.exports = function() {

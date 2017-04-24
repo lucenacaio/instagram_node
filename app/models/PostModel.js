@@ -7,26 +7,28 @@ const COLLECTION_USERS = 'users';
  * 
  * @param DB connection
  */
-function PostModel(connection) {
-    this._connection = connection();
+function PostModel(application) {
+    this.connection = application.config.dbConnection();
+    this._model = this.connection.model('User', application.app.schemas.user);
 }
 
 /**
- * @description Get all posts
+ * @description Get all posts from user
  * 
  * @param {Object} response 
  * @returns [Array] All posts on MongoDB
  */
 PostModel.prototype.getAllPosts = function(res) {
-    this._connection.open(function(err, mongoclient) {
-        mongoclient.collection(COLLECTION_NAME, function(err, collection) {
-            collection.find().toArray(function(err, result) {
-                if (err) res.json(err);
-                else res.json(result);
-                mongoclient.close();
-            });
+    let post = this._model;
+    User.findOne({
+            _id: userReq._id
+        }, '_id username name email profile_image following followers')
+        .populate('following', 'username _id name profile_image.img_url')
+        .populate("followers", 'username _id name profile_image.img_url')
+        .exec(function(err, users) {
+            if (err) res.status(400).json({ success: false });
+            else res.status(200).json(users);
         });
-    });
 }
 
 /**
@@ -151,6 +153,6 @@ PostModel.prototype.removeComment = function(req, res) {
 }
 
 
-module.exports = function() {
+module.exports = function(application) {
     return PostModel;
 }
