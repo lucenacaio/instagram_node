@@ -6,7 +6,7 @@ const ObjectID = require('mongoose').Types.ObjectId;
 
 function UsersModel(application) {
     this.connection = application.config.dbConnection();
-    this._model = this.connection.model('User', application.app.schemas.user);
+    this._model = this.connection.model('User', application.schemas.user);
 }
 
 UsersModel.prototype.addUser = function(req, res, user) {
