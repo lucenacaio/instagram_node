@@ -1,6 +1,4 @@
-const ObjectID = require('mongodb').ObjectId;
-const COLLECTION_NAME = 'post';
-const COLLECTION_USERS = 'users';
+const ObjectID = require('mongoose').Types.ObjectId;
 
 /**
  * @description Constructor
@@ -9,7 +7,7 @@ const COLLECTION_USERS = 'users';
  */
 function PostModel(application) {
     this.connection = application.config.dbConnection();
-    this._model = this.connection.model('User', application.app.schemas.user);
+    this._model = this.connection.model('Post', application.app.schemas.post);
 }
 
 /**
@@ -51,29 +49,18 @@ PostModel.prototype.getPostById = function(req, res) {
 
 
 /**
- * @description Save all posts
+ * @description Save post
  * 
- * @returns {Object} 1 if success or 0 if error
+ * @returns {Object} success
  */
 PostModel.prototype.savePost = function(data, user, req, res) {
-    this._connection.open(function(err, mongoclient) {
-        let user_post = {};
-        mongoclient.collection(COLLECTION_USERS, function(err, collection) {
-            collection.find({ username: user }).toArray(function(err, result) {
-                if (err) res.json(err);
-                else {
-                    user_post = result[0];
-                    mongoclient.collection(COLLECTION_NAME, function(err, collection) {
-                        data.user = ObjectID(user_post._id);
-                        collection.insert(data, function(err, records) {
-                            if (err) res.json({ status: 0 });
-                            else res.status(201).json({ status: 1 });
-                            mongoclient.close();
-                        });
-                    });
-                }
-            });
-        });
+    data.user = ObjectID(user);
+    let Post = new this._model(data);
+    Post.save(function(err, post) {
+        if (err) {
+            res.status(400).json({ success: false })
+            console.log(err);
+        } else { res.status(201).json({ success: true }); }
     });
 }
 
