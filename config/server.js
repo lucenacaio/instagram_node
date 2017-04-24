@@ -32,13 +32,14 @@ app.use(function(req, res, next) {
     }
     next();
 });
-consign({ cwd: process.cwd() })
+consign({ cwd: process.cwd() + "/app" })
     .include('/routes')
-    .then('/config/dbConnection.js')
-    .then('/app/schemas')
+    .then('/schemas')
     .then('/models')
     .then('/util')
     .then('/controllers')
     .into(app);
+
+consign().include('/config/dbConnection.js').into(app);
 
 module.exports = app;
