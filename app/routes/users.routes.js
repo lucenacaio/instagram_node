@@ -11,7 +11,7 @@ module.exports = function(application) {
      * @param  {Object} profile_picture
      */
     application.post('/user', function(req, res) {
-        application.app.controllers.user.addUser(application, req, res);
+        application.controllers.user.addUser(application, req, res);
     });
 
     /**
