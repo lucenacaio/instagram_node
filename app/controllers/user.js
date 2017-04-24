@@ -9,8 +9,8 @@ const jwt = require('jsonwebtoken');
  */
 module.exports.addUser = function(application, req, res) {
     let user = req.body;
-    let UsersModel = new application.app.models.UsersModel(application);
-    let pathUtil = new application.app.util.pathUtil();
+    let UsersModel = new application.models.UsersModel(application);
+    let pathUtil = new application.util.pathUtil();
     var profile_picture = pathUtil.saveProfilePicture(req, res);
     if (profile_picture.status === 0) {
         res.status(500).json(profile_picture);
