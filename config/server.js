@@ -34,11 +34,11 @@ app.use(function(req, res, next) {
 });
 consign({ cwd: process.cwd() + "/app" })
     .include('app/routes')
-    .then('config/dbConnection.js')
+    .then('./config/dbConnection.js')
     .then('/schemas')
     .then('/models')
     .then('/util')
-    .then('app/controllers')
+    .then('/controllers')
     .into(app);
 
 module.exports = app;
