@@ -1,6 +1,6 @@
 var app = require('./config/server');
-app.set('port', (process.env.PORT || 8080));
-app.listen(app.get('port'), function() {
+var port = process.env.PORT || 8080;
+app.listen(port, function() {
 
-    console.log("Server run on port " + app.get('port'));
+    console.log("Server run on port " + port);
 })
