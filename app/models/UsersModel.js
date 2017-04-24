@@ -26,7 +26,7 @@ UsersModel.prototype.authenticate = function(application, res, user) {
     Person.findOne(user, '_id username name profile_image', function(err, person) {
         if (err) return res.status(400).json({ success: false });
         if (person) {
-            let authenticateUtil = new application.app.util.authenticateUtil(application);
+            let authenticateUtil = new application.util.authenticateUtil(application);
             let userToToken = {
                 username: person.username,
                 _id: person._id
