@@ -21,7 +21,7 @@ export class LoginPage {
   logar(username, password) {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http.post('http://localhost:8080/authenticate', { username, password }, options)
+    return this.http.post('http://9750d74c.ngrok.io/authenticate', { username, password }, options)
       .subscribe(data => {
         localStorage.setItem('token', data.json().token)
         this.navCtrl.push(HomePage);
