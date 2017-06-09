@@ -40,6 +40,8 @@ UsersModel.prototype.authenticate = function(application, res, user) {
                 token: token
             }
             res.status(200).json(userResponse);
+        } else {
+            res.status(401).json({ msg: 'Usuário e/ou senha inválido(s)' });
         }
     });
 }

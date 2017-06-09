@@ -5,13 +5,20 @@ var expressValidator = require('express-validator');
 var multiparty = require('connect-multiparty');
 var jwt = require('jsonwebtoken');
 var config = require('./config');
+var helmet = require('helmet');
+var compression = require('compression');
+
 
 var app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(helmet());
 app.use(multiparty());
 app.use(expressValidator());
 app.use(bodyParser.json());
+app.use(compression());
+
+app.disable('x-powered-by');
 
 app.set('superSecret', config.secret);
 
