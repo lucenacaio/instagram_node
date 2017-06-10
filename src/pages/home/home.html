@@ -4,6 +4,9 @@
             <button ion-button icon-only color="royal" (click)="getPhoto()">
               <ion-icon name="add"></ion-icon>
             </button>
+            <button ion-button icon-only color="royal" (click)="getPosts()">
+              <ion-icon name="refresh"></ion-icon>
+            </button>
         </ion-buttons>
         <button ion-button menuToggle>
           <ion-icon name="menu"></ion-icon>
@@ -12,6 +15,42 @@
     </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
+    <ion-card *ngFor="let item of posts">
 
+        <ion-item>
+            <ion-avatar item-start>
+                <img src="{{item.imagem}}">
+            </ion-avatar>
+            <h2>Marty McFly</h2>
+            <p>November 5, 1955</p>
+        </ion-item>
+
+        <img src="assets/iron_man.jpg">
+
+        <ion-card-content>
+            <p>{{item.text}}</p>
+        </ion-card-content>
+
+        <ion-row>
+            <ion-col>
+                <button ion-button icon-left clear small>
+        <ion-icon name="thumbs-up"></ion-icon>
+        <div>12 Likes</div>
+      </button>
+            </ion-col>
+            <ion-col>
+                <button ion-button icon-left clear small>
+        <ion-icon name="text"></ion-icon>
+        <div>4 Comments</div>
+      </button>
+            </ion-col>
+            <ion-col center text-center>
+                <ion-note>
+                    11h ago
+                </ion-note>
+            </ion-col>
+        </ion-row>
+
+    </ion-card>
 </ion-content>

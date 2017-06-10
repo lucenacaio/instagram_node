@@ -6,16 +6,18 @@ import { HttpModule } from '@angular/http';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
+import { ModalNewPostPage } from '../pages/modal-new-post/modal-new-post';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { Camera, CameraOptions } from '@ionic-native/camera';
+import { Camera } from '@ionic-native/camera';
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
-    LoginPage
+    LoginPage,
+    ModalNewPostPage
   ],
   imports: [
     BrowserModule,
@@ -26,7 +28,8 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
   entryComponents: [
     MyApp,
     HomePage,
-    LoginPage
+    LoginPage,
+    ModalNewPostPage
   ],
   providers: [
     StatusBar,
