@@ -6,10 +6,7 @@ var PostSchema = new Schema({
         type: Schema.ObjectId,
         ref: 'User'
     },
-    post_picture: {
-        img_name: String,
-        img_url: String
-    },
+    post_picture: String,
     comments: [{
         user: { type: Schema.ObjectId, ref: 'User' },
         comment: String,

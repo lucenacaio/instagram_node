@@ -7,10 +7,7 @@ var UserSchema = new Schema({
     password: String,
     username: { type: String, lowercase: true, index: true, unique: true },
     email: String,
-    profile_image: {
-        img_name: String,
-        img_url: String
-    },
+    profile_image: String,
     followers: [{ type: Schema.ObjectId, ref: 'User', unique: true, index: true }],
     following: [{ type: Schema.ObjectId, ref: 'User', unique: true, index: true }]
 });

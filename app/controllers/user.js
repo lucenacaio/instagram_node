@@ -9,21 +9,12 @@ const jwt = require('jsonwebtoken');
 module.exports.addUser = function(application, req, res) {
     let user = req.body;
     let UsersModel = new application.app.models.UsersModel(application);
-    let pathUtil = new application.app.util.pathUtil();
-    var profile_picture = pathUtil.saveProfilePicture(req, res);
-    if (profile_picture.status === 0) {
-        res.status(500).json(profile_picture);
-        return;
-    }
     let dataToSend = {
         password: user.password,
         username: user.username,
         email: user.email,
         name: user.name,
-        profile_image: {
-            img_name: profile_picture.file_name,
-            img_url: profile_picture.url_img_server
-        }
+        profile_image: user.profile_image
     }
     UsersModel.addUser(req, res, dataToSend);
 }

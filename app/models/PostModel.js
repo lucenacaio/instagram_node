@@ -24,8 +24,8 @@ PostModel.prototype.getPostFromUser = function(res, user) {
     Post.find({
             user: ObjectID(user)
         })
-        .populate('user', 'username _id name profile_image.img_url')
-        .populate('comments.user', 'username _id name profile_image.img_url')
+        .populate('user', 'username _id name profile_image')
+        .populate('comments.user', 'username _id name profile_image')
         .exec(function(err, users) {
             if (err) res.status(400).json({ success: false });
             else res.status(200).json(users);
@@ -44,8 +44,8 @@ PostModel.prototype.getPostById = function(application, req, res) {
     Post.findOne({
             _id: post
         })
-        .populate('user', 'username _id name profile_image.img_url')
-        .populate('comments.user', 'username _id name profile_image.img_url')
+        .populate('user', 'username _id name profile_image')
+        .populate('comments.user', 'username _id name profile_image')
         .exec(function(err, post) {
             if (err) res.status(400).json({ success: false });
             else res.status(200).json(post);

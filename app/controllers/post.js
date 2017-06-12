@@ -48,18 +48,9 @@ module.exports.savePost = function(application, req, res) {
             return;
         } else {
             let PostModel = new application.app.models.PostModel(application);
-            let pathUtil = new application.app.util.pathUtil();
-            var moveImage = pathUtil.changePathImage(req, res);
-            if (moveImage.status === 0) {
-                res.status(500).json(moveImage);
-                return;
-            }
             let user = decoded._id;
             let dataToSend = {
-                post_picture: {
-                    img_name: moveImage.file_name,
-                    img_url: moveImage.url_img_server,
-                },
+                post_picture: req.body.post_picture,
                 status: req.body.status
             };
             PostModel.savePost(dataToSend, user, req, res);
